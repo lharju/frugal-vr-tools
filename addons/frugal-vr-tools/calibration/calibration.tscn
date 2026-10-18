@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://cabtd1xdqqqwa"]
+
+[ext_resource type="Shader" uid="uid://dhrrgel854nkh" path="res://addons/frugal-vr-tools/calibration/grid.gdshader" id="1_ihcc4"]
+[ext_resource type="Script" uid="uid://m4sxydqwbe78" path="res://addons/frugal-vr-tools/calibration/calibration.gd" id="1_widi0"]
+[ext_resource type="Script" uid="uid://beinrm22iqc1n" path="res://addons/frugal-vr-tools/calibration/xr_camera_3d.gd" id="2_widi0"]
+[ext_resource type="Texture2D" uid="uid://c41l48jys3mm2" path="res://addons/frugal-vr-tools/calibration/calibration_circle.png" id="3_xfwyp"]
+
+[sub_resource type="Environment" id="Environment_l6fwy"]
+ambient_light_source = 1
+reflected_light_source = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0hldh"]
+render_priority = 0
+shader = ExtResource("1_ihcc4")
+shader_parameter/color = Color(0.65834004, 0.6583399, 0.6583399, 1)
+shader_parameter/repeat = 10
+shader_parameter/grid = 0.005
+
+[sub_resource type="BoxMesh" id="BoxMesh_8u1t1"]
+material = SubResource("ShaderMaterial_0hldh")
+flip_faces = true
+size = Vector3(3, 3, 3)
+
+[node name="Calibration" type="Node3D" unique_id=51995497]
+script = ExtResource("1_widi0")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1247023622]
+environment = SubResource("Environment_l6fwy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1809128363]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("BoxMesh_8u1t1")
+
+[node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=319958564]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" unique_id=1721888952]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+script = ExtResource("2_widi0")
+
+[node name="Sprite3D" type="Sprite3D" parent="XROrigin3D/XRCamera3D" unique_id=221951707]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+pixel_size = 0.001
+billboard = 1
+double_sided = false
+fixed_size = true
+texture = ExtResource("3_xfwyp")
+
+[node name="Label3D" type="Label3D" parent="XROrigin3D/XRCamera3D" unique_id=894406308]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.476313)
+pixel_size = 0.001
+text = "Test"

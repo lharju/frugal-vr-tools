@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://bmdj6ys0ebak5"]
+
+[ext_resource type="Script" uid="uid://pva2kcjubnio" path="res://demo.gd" id="1_0bhed"]
+[ext_resource type="Shader" uid="uid://dhrrgel854nkh" path="res://addons/frugal-vr-tools/calibration/grid.gdshader" id="2_m0rpm"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mf4mk"]
+sky_top_color = Color(0.3446096, 0.42355728, 0.7370298, 1)
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+sky_curve = 0.051226653
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_37kl0"]
+sky_material = SubResource("ProceduralSkyMaterial_mf4mk")
+
+[sub_resource type="Environment" id="Environment_8uh7m"]
+background_mode = 2
+sky = SubResource("Sky_37kl0")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_widi0"]
+render_priority = 0
+shader = ExtResource("2_m0rpm")
+shader_parameter/color = Color(0.5370113, 0.5370113, 0.5370113, 1)
+shader_parameter/repeat = 6
+shader_parameter/grid = 0.01
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_g14j6"]
+material = SubResource("ShaderMaterial_widi0")
+size = Vector2(10, 10)
+
+[node name="TestScene" type="Node3D" unique_id=1231433776]
+script = ExtResource("1_0bhed")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=345640935]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+light_color = Color(1, 0.92941177, 0.8, 1)
+light_angular_distance = 5.0
+light_bake_mode = 1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1692865134]
+environment = SubResource("Environment_8uh7m")
+
+[node name="Floor" type="MeshInstance3D" parent="." unique_id=807884736]
+mesh = SubResource("PlaneMesh_g14j6")
+
+[node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=744821336]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" unique_id=938649404]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
