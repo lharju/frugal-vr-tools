@@ -9,7 +9,7 @@ extends Node
 ##		2.3 Input
 
 const _config_path: String = "user://xr_interface_properties.cfg" 
-const _calibration_scene: PackedScene = preload("uid://cabtd1xdqqqwa")
+var _calibration_scene = preload("res://addons/frugal-vr-tools/calibration/calibration.tscn")
 
 var _interface: MobileVRInterface = null
 var _config: ConfigFile = null
@@ -21,7 +21,7 @@ var eye_height: float = 1.5:
 			eye_height = a
 			_interface.eye_height = eye_height
 
-func save_properties():
+func _save_properties():
 	_config.set_value("config", "display_to_lens", _interface.display_to_lens)
 	_config.set_value("config", "display_width", _interface.display_width)
 	_config.set_value("config", "iod", _interface.iod)
@@ -30,7 +30,7 @@ func save_properties():
 	_config.set_value("config", "offset_rect", _interface.offset_rect)
 	_config.save(_config_path)
 	
-func load_properties():
+func _load_properties():
 	_config.load(_config_path)
 	_interface.display_to_lens	= _config.get_value("config", "display_to_lens", 4.0)
 	_interface.display_width	= _config.get_value("config", "display_width", 14.5)
@@ -65,6 +65,6 @@ func _ready() -> void:
 	# Load config file if it exists, else create it with default values
 	_config = ConfigFile.new()
 	if FileAccess.file_exists(_config_path):
-		load_properties()
+		_load_properties()
 	else:
-		save_properties()
+		_save_properties()

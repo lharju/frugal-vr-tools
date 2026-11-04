@@ -44,5 +44,5 @@ func _process(delta: float) -> void:
 			FrugalVRManager._interface.k2 = 0.215 + 0.5 * pitch
 			label_3d.text = "k2\n%.03f" % FrugalVRManager._interface.k2
 		_:
-			FrugalVRManager.save_properties()
+			FrugalVRManager._save_properties()
 			FrugalVRManager.end_calibration()
