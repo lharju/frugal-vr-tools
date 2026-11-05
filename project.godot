@@ -23,6 +23,8 @@ FrugalVRManager="*uid://dx18wcrncv4so"
 
 [display]
 
+window/frame_pacing/android/enable_frame_pacing=false
+window/frame_pacing/android/swappy_mode=0
 window/vsync/vsync_mode=0
 
 [editor_plugins]

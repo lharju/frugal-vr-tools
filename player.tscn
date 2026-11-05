@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://c00wd1ox8lul1"]
+
+[ext_resource type="Script" uid="uid://ccy2y58domffh" path="res://PlayerController.gd" id="1_4flbx"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oir02"]
+
+[node name="Player" type="CharacterBody3D" unique_id=51429361]
+script = ExtResource("1_4flbx")
+
+[node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=1287017001]
+current = true
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" unique_id=586650830]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="XROrigin3D/XRCamera3D" unique_id=1056640509]
+target_position = Vector3(0, 0, -5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1520049079]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_oir02")
+
+[node name="Timer" type="Timer" parent="." unique_id=989796862]
+wait_time = 0.1

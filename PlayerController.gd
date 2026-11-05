@@ -1,9 +1,7 @@
 extends CharacterBody3D
 
-
-const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
-
+var movement_velocity: float = 5
+var deadzone: float = 0.3
 var pressed: bool = false
 
 @onready var camera: XRCamera3D = $XROrigin3D/XRCamera3D
@@ -14,28 +12,21 @@ func _unhandled_input(event):
 		pressed = screen_touch.pressed
 		if screen_touch.double_tap:
 			FrugalVRManager.load_calibration()
+		if screen_touch.pressed and not pressed:
+			pressed = screen_touch.pressed
+			
 
+func _ready() -> void:
+	FrugalVRManager.eye_height = 1.70
 
 
 func _physics_process(delta: float) -> void:
-	# Add the gravity.
+	var move_vec: Vector3 = camera.basis.y * Vector3(1, 0, 1)
+	var on: float = 1 if move_vec.length() > deadzone else 0
+	
+	
+	velocity = move_vec * on * movement_velocity
+	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-
-	#camera.global_basis.y * Vector3(1, 0, 1)
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	
-	var direction := (transform.basis * camera.global_basis.y * Vector3(1, 0, 1))
-	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
-
 	move_and_slide()
