@@ -7,6 +7,10 @@
 [node name="Player" type="CharacterBody3D" unique_id=51429361]
 script = ExtResource("1_4flbx")
 
+[node name="HoldTimer" type="Timer" parent="." unique_id=989796862]
+wait_time = 0.25
+one_shot = true
+
 [node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=1287017001]
 current = true
 
@@ -20,5 +24,4 @@ target_position = Vector3(0, 0, -5)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_oir02")
 
-[node name="Timer" type="Timer" parent="." unique_id=989796862]
-wait_time = 0.1
+[connection signal="timeout" from="HoldTimer" to="." method="_on_hold_timer_timeout"]
