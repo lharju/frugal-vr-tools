@@ -1,14 +1,17 @@
 [gd_scene format=3 uid="uid://c00wd1ox8lul1"]
 
 [ext_resource type="Script" uid="uid://ccy2y58domffh" path="res://PlayerController.gd" id="1_4flbx"]
+[ext_resource type="Texture2D" uid="uid://dv18hxxf2umeh" path="res://rotation_arrows.png" id="2_onrkg"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oir02"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_oir02"]
 
 [node name="Player" type="CharacterBody3D" unique_id=51429361]
 script = ExtResource("1_4flbx")
 
 [node name="HoldTimer" type="Timer" parent="." unique_id=989796862]
-wait_time = 0.25
+wait_time = 0.2
 one_shot = true
 
 [node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=1287017001]
@@ -16,12 +19,28 @@ current = true
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" unique_id=586650830]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+cull_mask = 524287
 
 [node name="RayCast3D" type="RayCast3D" parent="XROrigin3D/XRCamera3D" unique_id=1056640509]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.47859085)
 target_position = Vector3(0, 0, -5)
+
+[node name="Sprite3D" type="Sprite3D" parent="XROrigin3D/XRCamera3D" unique_id=413511590]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.5091364)
+visible = false
+pixel_size = 0.001
+render_priority = 1
+texture = ExtResource("2_onrkg")
+
+[node name="Marker3D" type="Marker3D" parent="XROrigin3D/XRCamera3D" unique_id=177219367]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.503994)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1520049079]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_oir02")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D" unique_id=398751445]
+layers = 524288
+mesh = SubResource("CapsuleMesh_oir02")
 
 [connection signal="timeout" from="HoldTimer" to="." method="_on_hold_timer_timeout"]
