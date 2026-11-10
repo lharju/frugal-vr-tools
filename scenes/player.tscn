@@ -3,6 +3,13 @@
 [ext_resource type="Script" uid="uid://ccy2y58domffh" path="res://scripts/PlayerController.gd" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://dv18hxxf2umeh" path="res://assets/rotation_arrows.png" id="2_onrkg"]
 
+[sub_resource type="Curve3D" id="Curve3D_g2els"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, 0, 0, -0.4),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oir02"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_oir02"]
@@ -27,14 +34,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.47859085)
 target_position = Vector3(0, 0, -5)
 
 [node name="Sprite3D" type="Sprite3D" parent="XROrigin3D/XRCamera3D" unique_id=413511590]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.5091364)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.0950127)
 visible = false
+ignore_occlusion_culling = true
 pixel_size = 0.001
 render_priority = 1
 texture = ExtResource("2_onrkg")
 
-[node name="Marker3D" type="Marker3D" parent="XROrigin3D/XRCamera3D" unique_id=177219367]
+[node name="Path3D" type="Path3D" parent="XROrigin3D/XRCamera3D" unique_id=1830794805]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
+curve = SubResource("Curve3D_g2els")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="XROrigin3D/XRCamera3D/Path3D" unique_id=319455503]
+transform = Transform3D(0.99999684, 0, 0, 0, 0.99999684, 0, 0, 0, 0.99999595, 0, 0, 0.04016132)
+progress = 0.559017
+loop = false
+
+[node name="Marker3D" type="Marker3D" parent="XROrigin3D/XRCamera3D/Path3D/PathFollow3D" unique_id=177219367]
+transform = Transform3D(1.0000012, 0, 0, 0, 1.0000012, 0, 0, 0, 1.0000018, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1520049079]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

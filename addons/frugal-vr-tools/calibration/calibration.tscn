@@ -2,7 +2,6 @@
 
 [ext_resource type="Shader" uid="uid://dhrrgel854nkh" path="res://addons/frugal-vr-tools/calibration/grid.gdshader" id="1_ihcc4"]
 [ext_resource type="Script" uid="uid://m4sxydqwbe78" path="res://addons/frugal-vr-tools/calibration/calibration.gd" id="1_widi0"]
-[ext_resource type="Script" uid="uid://beinrm22iqc1n" path="res://addons/frugal-vr-tools/calibration/xr_camera_3d.gd" id="2_widi0"]
 [ext_resource type="Texture2D" uid="uid://c41l48jys3mm2" path="res://addons/frugal-vr-tools/calibration/calibration_circle.png" id="3_xfwyp"]
 [ext_resource type="Texture2D" uid="uid://1387s7mpltfa" path="res://addons/frugal-vr-tools/calibration/calibration_square.png" id="4_xfwyp"]
 
@@ -38,7 +37,6 @@ mesh = SubResource("BoxMesh_8u1t1")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" unique_id=1721888952]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-script = ExtResource("2_widi0")
 
 [node name="Square" type="Sprite3D" parent="XROrigin3D/XRCamera3D" unique_id=221951707]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)

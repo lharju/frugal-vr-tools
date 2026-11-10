@@ -1,41 +1,33 @@
 extends Node3D
 
-enum CalibrationState {ROOM, DISPLAY_TO_LENS, DISPLAY_WIDTH, IOD, K1, K2}
+enum CalibrationState {ROOM, DISPLAY_TO_LENS, DISPLAY_WIDTH, IOD, K1, K2, END}
 var calibration_state = CalibrationState.ROOM:
 	set(a):
 		calibration_state = a
+		
+		# Hide all, and then only show what is needed
+		room.hide()
+		circle.hide()
+		square.hide()
+		label_3d.hide()
 		match calibration_state:
 			CalibrationState.ROOM:
 				room.show()
-				circle.hide()
-				square.hide()
-				label_3d.hide()
 			CalibrationState.DISPLAY_TO_LENS:
-				room.hide()
-				circle.hide()
-				square.hide()
 				label_3d.show()
 			CalibrationState.DISPLAY_WIDTH:
-				room.hide()
-				circle.hide()
-				square.hide()
 				label_3d.show()
 			CalibrationState.IOD:
-				room.hide()
 				circle.show()
-				square.hide()
 				label_3d.show()
 			CalibrationState.K1:
-				room.hide()
-				circle.hide()
 				square.show()
 				label_3d.show()
 			CalibrationState.K2:
-				room.hide()
-				circle.hide()
 				square.show()
 				label_3d.show()
 				
+
 @onready var room: MeshInstance3D = $Room
 
 @onready var camera: XRCamera3D = $XROrigin3D/XRCamera3D
@@ -77,6 +69,7 @@ func _process(delta: float) -> void:
 		CalibrationState.K2:
 			FrugalVRManager._interface.k2 = 0.215 + 0.5 * pitch
 			label_3d.text = "k2\n%.03f" % FrugalVRManager._interface.k2
-		_:
+		CalibrationState.END:
+			print("Trying to end calibration")
 			FrugalVRManager._save_properties()
 			FrugalVRManager.end_calibration()

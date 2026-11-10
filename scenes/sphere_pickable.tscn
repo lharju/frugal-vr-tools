@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://7bkb8pv4uagl"]
+
+[ext_resource type="Script" uid="uid://dcc00sl3iik2a" path="res://scripts/Pickable.gd" id="1_dq5ul"]
+[ext_resource type="Texture2D" uid="uid://der1wv5sfe7lp" path="res://assets/grid_albedo.png" id="2_x80j8"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_oir02"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j3v1v"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_texture = ExtResource("2_x80j8")
+uv1_scale = Vector3(2, 2, 2)
+
+[sub_resource type="SphereMesh" id="SphereMesh_oir02"]
+material = SubResource("StandardMaterial3D_j3v1v")
+
+[node name="Sphere" type="RigidBody3D" unique_id=558737267]
+freeze_mode = 1
+script = ExtResource("1_dq5ul")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=321439353]
+shape = SubResource("SphereShape3D_oir02")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=290533351]
+mesh = SubResource("SphereMesh_oir02")

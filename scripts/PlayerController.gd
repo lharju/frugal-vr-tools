@@ -29,7 +29,9 @@ var input_hold_double: bool = false
 @onready var hold_timer: Timer = $HoldTimer
 @onready var look_raycast: RayCast3D = $XROrigin3D/XRCamera3D/RayCast3D
 @onready var rotate_image: Sprite3D = $XROrigin3D/XRCamera3D/Sprite3D
-@onready var marker_3d: Marker3D = $XROrigin3D/XRCamera3D/Marker3D
+@onready var marker_3d: Marker3D = $XROrigin3D/XRCamera3D/Path3D/PathFollow3D/Marker3D
+@onready var path_3d: Path3D = $XROrigin3D/XRCamera3D/Path3D
+@onready var path_follow_3d: PathFollow3D = $XROrigin3D/XRCamera3D/Path3D/PathFollow3D
 
 func _unhandled_input(event):
 	if event is InputEventScreenTouch:
@@ -46,6 +48,8 @@ func _unhandled_input(event):
 			if input_hold_single:
 				input_hold_single = false
 			if input_hold_double:
+				if picked:
+					picked.track = true
 				input_hold_double = false
 			elif hold == SINGLE:
 				print("Single")
@@ -62,54 +66,57 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var roll: float = camera.global_basis.tdotx(self.global_basis.x)
+	var roll: float = camera.global_basis.tdotx(Vector3.UP)
+	roll -= clamp(roll, -0.05, 0.05)
+	
+	var move_vec: Vector3 = Vector3.ZERO
+	var on: float = 0
+	
 	if input_hold_double:
-		var move_vec: Vector3 = camera.global_basis.y * Vector3(1, 0, 1)
-		var on: float = 1 if move_vec.length() > deadzone else 0
-		velocity.x = move_toward(velocity.x, move_vec.x * movement_velocity * on, delta * 100)
-		velocity.z = move_toward(velocity.z, move_vec.z * movement_velocity * on, delta * 100)
+		if picked:
+			if picked.track:
+				rotating = camera.global_basis
+				picked.track = false
+		
+			var rotating_x: float = camera.global_basis.tdotz(rotating.y)
+			var rotating_y: float = camera.global_basis.tdotz(rotating.x)
+			
+			var dz: float = 0.05
+			rotating_x -= clamp(rotating_x, -dz, dz)
+			rotating_y -= clamp(rotating_y, -dz, dz)
+			
+			picked.apply_torque(+rotating_x * 3 * rotating.x)
+			picked.apply_torque(-rotating_y * 3 * rotating.y)
+		
 	elif input_hold_single:
-		pass
-	elif input_double:
-		pass
-	elif input_single:
-		pass
-	
-	
-	move_and_slide()
-	
-	return 
-	if input_single and not picked:
-		if look_raycast.is_colliding():
+		move_vec = camera.global_basis.y * Vector3(1, 0, 1)
+		on = 1 if move_vec.length() > deadzone else 0
+		
+	if input_double:
+		if picked:
+			picked.drop()
+			picked = null
+		elif look_raycast.is_colliding():
 			var collison_object: Object = look_raycast.get_collider()
 			if collison_object is Pickable:
 				picked = collison_object as Pickable
 				picked.pick(marker_3d)
 				rotating = Basis(Vector3.ZERO, Vector3.ZERO, Vector3.ZERO)
-	elif input_double and picked:
-		picked.drop()
-		picked = null
-		rotating = Basis(Vector3.ZERO, Vector3.ZERO, Vector3.ZERO)
-	elif input_hold_single and picked:
-		picked.track = false
-		if rotating.get_scale().length() == 0.0:
-			rotating = camera.global_basis
-			
-		var rotating_x: Vector3 = camera.global_basis.tdotz(rotating.y) * rotating.x
-		var rotating_y: Vector3 = camera.global_basis.tdotz(rotating.x) * rotating.y
-		picked.apply_torque(rotating_x)
-		picked.apply_torque(rotating_y)
-	
-	elif input_hold_double and not picked:
-		var move_vec: Vector3 = camera.global_basis.y * Vector3(1, 0, 1)
-		var on: float = 1 if move_vec.length() > deadzone else 0
-		velocity.x = move_toward(velocity.x, move_vec.x * movement_velocity * on, delta * 100)
-		velocity.z = move_toward(velocity.z, move_vec.z * movement_velocity * on, delta * 100)
+		
+	elif input_single:
+		pass
 	elif picked:
-		picked.track = true
+		
+		path_follow_3d.progress_ratio = clamp(path_follow_3d.progress_ratio - roll * 2 * delta, 0.0, 1.0)
+	else:
+		path_follow_3d.progress = 0.5
 	
-
+		
+		
+		
 	
+	velocity.z = move_toward(velocity.z, move_vec.z * movement_velocity * on, delta * 100)
+	velocity.x = move_toward(velocity.x, move_vec.x * movement_velocity * on, delta * 100)
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	move_and_slide()
