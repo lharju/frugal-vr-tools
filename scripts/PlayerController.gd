@@ -35,46 +35,53 @@ func _unhandled_input(event):
 	if event is InputEventScreenTouch:
 		var screen_touch: InputEventScreenTouch = event as InputEventScreenTouch
 		
-		
-		# double tap is never registered with presed as false
 		if screen_touch.pressed:
 			hold_timer.start()
-			if screen_touch.double_tap: # Double tap
+			if screen_touch.double_tap:
 				hold = DOUBLE
 			else:
 				hold = SINGLE
 		else:
 			hold_timer.stop()
-			if input_hold_single or input_hold_double:
-				input_hold_double = false
+			if input_hold_single:
 				input_hold_single = false
+			if input_hold_double:
+				input_hold_double = false
 			elif hold == SINGLE:
+				print("Single")
 				input_single = true
 			elif hold == DOUBLE:
+				print("Double")
 				input_double = true
-				
-
-
+			hold = NONE
 
 
 func _ready() -> void:
+	#FrugalVRManager.load_calibration()
 	FrugalVRManager.eye_height = 1.70
 
 
 func _physics_process(delta: float) -> void:
-	var move_vec: Vector3 = camera.global_basis.y * Vector3(1, 0, 1)
-	var on: float = 1 if move_vec.length() > deadzone and input_hold_single else 0
 	var roll: float = camera.global_basis.tdotx(self.global_basis.x)
+	if input_hold_double:
+		var move_vec: Vector3 = camera.global_basis.y * Vector3(1, 0, 1)
+		var on: float = 1 if move_vec.length() > deadzone else 0
+		velocity.x = move_toward(velocity.x, move_vec.x * movement_velocity * on, delta * 100)
+		velocity.z = move_toward(velocity.z, move_vec.z * movement_velocity * on, delta * 100)
+	elif input_hold_single:
+		pass
+	elif input_double:
+		pass
+	elif input_single:
+		pass
 	
 	
+	move_and_slide()
 	
-
-
-	
-	
+	return 
 	if input_single and not picked:
 		if look_raycast.is_colliding():
-			var collison_object := look_raycast.get_collider()
+			var collison_object: Object = look_raycast.get_collider()
 			if collison_object is Pickable:
 				picked = collison_object as Pickable
 				picked.pick(marker_3d)
@@ -88,20 +95,21 @@ func _physics_process(delta: float) -> void:
 		if rotating.get_scale().length() == 0.0:
 			rotating = camera.global_basis
 			
-		var rotating_x = camera.global_basis.tdotz(rotating.y) * rotating.x
-		var rotating_y = camera.global_basis.tdotz(rotating.x) * rotating.y
+		var rotating_x: Vector3 = camera.global_basis.tdotz(rotating.y) * rotating.x
+		var rotating_y: Vector3 = camera.global_basis.tdotz(rotating.x) * rotating.y
 		picked.apply_torque(rotating_x)
 		picked.apply_torque(rotating_y)
 	
-	elif input_hold_single and not picked:
-		velocity.x = move_toward(velocity.x, move_vec.x * movement_velocity, delta * 100)
-		velocity.z = move_toward(velocity.z, move_vec.z * movement_velocity, delta * 100)
+	elif input_hold_double and not picked:
+		var move_vec: Vector3 = camera.global_basis.y * Vector3(1, 0, 1)
+		var on: float = 1 if move_vec.length() > deadzone else 0
+		velocity.x = move_toward(velocity.x, move_vec.x * movement_velocity * on, delta * 100)
+		velocity.z = move_toward(velocity.z, move_vec.z * movement_velocity * on, delta * 100)
 	elif picked:
 		picked.track = true
 	
 
-		
-		
+	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	move_and_slide()
@@ -110,10 +118,13 @@ func _physics_process(delta: float) -> void:
 func _on_hold_timer_timeout() -> void:
 	match hold:
 		SINGLE:
+			print("Single Hold")
 			input_hold_single = true
 			hold = NONE
 		DOUBLE:
-			input_hold_single = true
+			print("Double Hold")
+			input_hold_double = true
 			hold = NONE
 		_:
 			pass
+	hold = NONE

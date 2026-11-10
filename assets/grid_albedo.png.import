@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dv18hxxf2umeh"
-path.s3tc="res://.godot/imported/rotation_arrows.png-8ca115b7ec795ca78e79e46a949cb95f.s3tc.ctex"
-path.etc2="res://.godot/imported/rotation_arrows.png-8ca115b7ec795ca78e79e46a949cb95f.etc2.ctex"
+uid="uid://der1wv5sfe7lp"
+path.s3tc="res://.godot/imported/grid_albedo.png-ff000141746912ae31f52a29a2156c8a.s3tc.ctex"
+path.etc2="res://.godot/imported/grid_albedo.png-ff000141746912ae31f52a29a2156c8a.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://rotation_arrows.png"
-dest_files=["res://.godot/imported/rotation_arrows.png-8ca115b7ec795ca78e79e46a949cb95f.s3tc.ctex", "res://.godot/imported/rotation_arrows.png-8ca115b7ec795ca78e79e46a949cb95f.etc2.ctex"]
+source_file="res://assets/grid_albedo.png"
+dest_files=["res://.godot/imported/grid_albedo.png-ff000141746912ae31f52a29a2156c8a.s3tc.ctex", "res://.godot/imported/grid_albedo.png-ff000141746912ae31f52a29a2156c8a.etc2.ctex"]
 
 [params]
 
