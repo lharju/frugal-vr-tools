@@ -1,12 +1,10 @@
 [gd_scene format=3 uid="uid://b5fg5kid5ut6p"]
 
 [ext_resource type="Script" uid="uid://dcc00sl3iik2a" path="res://scripts/Pickable.gd" id="1_ar6ji"]
-[ext_resource type="Texture2D" uid="uid://der1wv5sfe7lp" path="res://assets/grid_albedo.png" id="2_18615"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x0xbu"]
 diffuse_mode = 3
-specular_mode = 1
-albedo_texture = ExtResource("2_18615")
+albedo_color = Color(0, 0, 1, 1)
 uv1_scale = Vector3(3, 2, 2)
 
 [sub_resource type="BoxMesh" id="BoxMesh_j3v1v"]

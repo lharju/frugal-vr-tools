@@ -102,9 +102,15 @@ func _physics_process(delta: float) -> void:
 				picked = collison_object as Pickable
 				picked.pick(marker_3d)
 				rotating = Basis(Vector3.ZERO, Vector3.ZERO, Vector3.ZERO)
+				
 		
 	elif input_single:
-		pass
+		if look_raycast.is_colliding():
+			var collison_object: Object = look_raycast.get_collider()
+			if collison_object is Interractable:
+				(collison_object as Interractable).interact()
+				
+		
 	elif picked:
 		
 		path_follow_3d.progress_ratio = clamp(path_follow_3d.progress_ratio - roll * 2 * delta, 0.0, 1.0)

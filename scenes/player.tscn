@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://c00wd1ox8lul1"]
 
 [ext_resource type="Script" uid="uid://ccy2y58domffh" path="res://scripts/PlayerController.gd" id="1_4flbx"]
-[ext_resource type="Texture2D" uid="uid://dv18hxxf2umeh" path="res://assets/rotation_arrows.png" id="2_onrkg"]
+[ext_resource type="Texture2D" uid="uid://1e1ycm8cgtjd" path="res://assets/reticle.png" id="2_g2els"]
 
 [sub_resource type="Curve3D" id="Curve3D_g2els"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, 0, 0, -0.4),
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, 0, 0, -0.5),
 "tilts": PackedFloat32Array(0, 0)
 }
 point_count = 2
@@ -34,19 +34,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.47859085)
 target_position = Vector3(0, 0, -5)
 
 [node name="Sprite3D" type="Sprite3D" parent="XROrigin3D/XRCamera3D" unique_id=413511590]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.0950127)
-visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.9287465)
 ignore_occlusion_culling = true
-pixel_size = 0.001
+pixel_size = 0.0001
+billboard = 1
+no_depth_test = true
+fixed_size = true
 render_priority = 1
-texture = ExtResource("2_onrkg")
+texture = ExtResource("2_g2els")
 
 [node name="Path3D" type="Path3D" parent="XROrigin3D/XRCamera3D" unique_id=1830794805]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
 curve = SubResource("Curve3D_g2els")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="XROrigin3D/XRCamera3D/Path3D" unique_id=319455503]
-transform = Transform3D(0.99999684, 0, 0, 0, 0.99999684, 0, 0, 0, 0.99999595, 0, 0, 0.04016132)
+transform = Transform3D(0.99999684, 0, 0, 0, 0.99999684, 0, 0, 0, 0.99999595, 0, 0, 0.19123758)
 progress = 0.559017
 loop = false
 

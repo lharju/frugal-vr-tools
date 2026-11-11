@@ -14,7 +14,7 @@ var _calibration_scene: PackedScene = preload("res://addons/frugal-vr-tools/cali
 
 var _interface: MobileVRInterface = null
 var _config: ConfigFile = null
-var _previous_scene: PackedScene= null
+var _previous_scene: Node = null
 
 var using_defaults: bool = false
 
@@ -36,23 +36,22 @@ func _save_properties():
 func _load_properties():
 	_config.load(_config_path)
 	_interface.display_to_lens	= _config.get_value("config", "display_to_lens", 4.2)
-	_interface.display_width	= _config.get_value("config", "display_width", 16.)
-	_interface.iod				= _config.get_value("config", "iod", 6.3)
+	_interface.display_width	= _config.get_value("config", "display_width", 16)
+	_interface.iod				= _config.get_value("config", "iod", 6.)
 	_interface.k1				= _config.get_value("config", "k1", 0.215)
 	_interface.k2				= _config.get_value("config", "k2", 0.215)
 	_interface.offset_rect		= _config.get_value("config", "offset_rect", Rect2(0, 0, 1, 1))	
 
 
 func load_calibration(scene_to: PackedScene)-> void:
-	#_previous_scene = get_tree().current_scene.duplicate()
-	_previous_scene = scene_to
-	get_tree().current_scene.print_tree() #change_scene_to_packed(_calibration_scene)
+	_previous_scene = get_tree().current_scene.duplicate()
+	#_previous_scene = scene_to
+	#get_tree().current_scene.print_tree() 
+	get_tree().change_scene_to_packed(_calibration_scene)
 
-	await get_tree().scene_changed
 
 func end_calibration() -> void:
-	get_tree().change_scene_to_packed(_previous_scene)
-	await get_tree().scene_changed
+	get_tree().change_scene_to_node(_previous_scene)
 
 func _ready() -> void:
 	# If not running on android, skip creating the XR interface
